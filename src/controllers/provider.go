@@ -9,4 +9,5 @@ var ProviderSetCtrl = wire.NewSet(
 	NewConfigMapController,
 	ProviderDeploymentController,
 	ProviderUserController,
+	ProviderTerminalController,
 )

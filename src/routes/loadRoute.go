@@ -18,6 +18,7 @@ func ProvideRouter(
 	configmapController *controllers.ConfigMapController,
 	deployController *controllers.DeploymentController,
 	userController *controllers.UserController,
+	terminalController *controllers.TerminalController,
 ) (*gin.Engine, error) {
 	//r := gin.Default()
 	r := gin.Default()
@@ -38,5 +39,6 @@ func ProvideRouter(
 	configmapController.Build(api)
 	deployController.Build(api)
 	userController.Build(api)
+	terminalController.Build(api)
 	return r, nil
 }

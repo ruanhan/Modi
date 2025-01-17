@@ -31,6 +31,7 @@ func (this *AuthMiddleware) JwtAuthMiddleware() gin.HandlerFunc {
 			"/modi/v1/login":    true,
 			"/modi/v1/register": true,
 			"/modi/v1/test":     true,
+			"/modi/v1/podws":    true,
 		}
 		// 如果请求路径在白名单中，则不进行JWT验证，直接继续处理请求
 		if _, ok := exceptPaths[path]; ok {

@@ -18,21 +18,7 @@ func main() {
 		}
 		shellClient := wscore.NewWsShellClient(wsClient)
 
-		//params := &struct {
-		//	Namespace string `json:"ns"  required:"true"`
-		//	Pod       string `json:"pname" required:"true"`
-		//	Container string `json:"cname" required:"true"`
-		//}{}
-		//err = c.ShouldBindJSON(params)
-		//if err != nil {
-		//	log.Println(err)
-		//	return
-		//}
-		//?ns=infra&pname=taichu-web-68d6b4d548-f6skj&cname=taichu-web
-
-		//fmt.Println(params.Namespace, params.Pod, params.Container)
-
-		err = helpers.HandleCommand("infra", "taichu-web-68d6b4d548-f6skj", "taichu-web", client.K8sClient, client.K8sClientRestConfig, []string{"sh"}).Stream(
+		err = helpers.HandleCommand("infra", "taichu-web-66f995596f-6wc8s", "taichu-web", client.K8sClient, client.K8sClientRestConfig, []string{"sh"}).Stream(
 			remotecommand.StreamOptions{
 				Stdin:  shellClient,
 				Stdout: shellClient,

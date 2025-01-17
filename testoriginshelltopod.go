@@ -26,7 +26,7 @@ func main() {
 		RESTClient().Post().
 		Resource("pods").
 		Namespace("infra").
-		Name("taichu-web-6d65b576d4-7v272").
+		Name("taichu-web-66f995596f-6wc8s").
 		SubResource("exec").
 		VersionedParams(
 			option,

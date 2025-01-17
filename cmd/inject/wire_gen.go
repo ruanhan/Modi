@@ -42,7 +42,8 @@ func InitializeApp() (*server.App, error) {
 	deploymentService := service.ProviderDeploymentService(rsRep, podRepo, deploymentRepo, namespaceRepo, podService)
 	deploymentController := controllers.ProviderDeploymentController(deploymentService)
 	userController := controllers.ProviderUserController(iUserServiceGetterImpl)
-	engine, err := routes.ProvideRouter(informerManager, authMiddleware, errorHandlerMiddleware, authController, secretController, configMapController, deploymentController, userController)
+	terminalController := controllers.ProviderTerminalController()
+	engine, err := routes.ProvideRouter(informerManager, authMiddleware, errorHandlerMiddleware, authController, secretController, configMapController, deploymentController, userController, terminalController)
 	if err != nil {
 		return nil, err
 	}
