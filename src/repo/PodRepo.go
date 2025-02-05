@@ -151,3 +151,15 @@ func (this *PodRepo) GetDetail(ns string, podName string) (*corev1.Pod, error) {
 	}
 	return nil, fmt.Errorf("poddetail: record not found")
 }
+
+func (this *PodRepo) GetNumByNode(nodeName string) (num int) {
+	this.data.Range(func(key, value any) bool {
+		for _, pod := range value.([]*corev1.Pod) {
+			if pod.Spec.NodeName == nodeName {
+				num++
+			}
+		}
+		return true
+	})
+	return
+}

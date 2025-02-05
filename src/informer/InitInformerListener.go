@@ -16,6 +16,8 @@ type InformerManager struct {
 	rsRep         *repo.RsRep
 	deployRepo    *repo.DeploymentRepo
 	podRepo       *repo.PodRepo
+	serviceRepo   *repo.ServiceRepo
+	nodeRepo      *repo.NodeRepo
 }
 
 func NewInformerManager(
@@ -26,6 +28,8 @@ func NewInformerManager(
 	rsRep *repo.RsRep,
 	deployRepo *repo.DeploymentRepo,
 	podRepo *repo.PodRepo,
+	serviceRepo *repo.ServiceRepo,
+	nodeRepo *repo.NodeRepo,
 ) *InformerManager {
 	return &InformerManager{
 		secretRepo:    secretRepo,
@@ -36,6 +40,8 @@ func NewInformerManager(
 		rsRep:         rsRep,
 		deployRepo:    deployRepo,
 		podRepo:       podRepo,
+		serviceRepo:   serviceRepo,
+		nodeRepo:      nodeRepo,
 	}
 }
 
@@ -89,6 +95,18 @@ func (this *InformerManager) InitInformers() error {
 	if err != nil {
 		return err
 	}
+
+	// 初始化 service 的监听
+	serviceInformer := fact.Core().V1().Services().Informer()
+	_, err = serviceInformer.AddEventHandler(this.serviceRepo)
+	if err != nil {
+		return err
+	}
+
+	// 初始化 node的监听
+
+	nodeInformer := fact.Core().V1().Nodes().Informer()
+	_, err = nodeInformer.AddEventHandler(this.nodeRepo)
 
 	fact.Start(wait.NeverStop)
 	return nil

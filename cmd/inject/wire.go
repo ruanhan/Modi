@@ -18,6 +18,7 @@ import (
 func InitializeApp() (*server.App, error) {
 	wire.Build(
 		client.ProvideDB,
+		client.NewMetricsClientSet,
 		repo.ProviderSetRepo,
 		service.ProviderSetService,
 		controllers.ProviderSetCtrl,

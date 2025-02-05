@@ -19,8 +19,9 @@ func ProvideRouter(
 	deployController *controllers.DeploymentController,
 	userController *controllers.UserController,
 	terminalController *controllers.TerminalController,
+	serviceController *controllers.ServiceController,
+	nodeController *controllers.NodeController,
 ) (*gin.Engine, error) {
-	//r := gin.Default()
 	r := gin.Default()
 	// 初始化k8s client
 	err := informerManager.InitInformers()
@@ -40,5 +41,7 @@ func ProvideRouter(
 	deployController.Build(api)
 	userController.Build(api)
 	terminalController.Build(api)
+	serviceController.Build(api)
+	nodeController.Build(api)
 	return r, nil
 }

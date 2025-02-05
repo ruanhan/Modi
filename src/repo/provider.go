@@ -14,4 +14,6 @@ var ProviderSetRepo = wire.NewSet(
 	ProviderDeploymentRepo,
 	ProviderPodRepo,
 	ProviderNamespaceRepo,
+	ProviderServiceRepo,
+	ProviderNodeRepo,
 )

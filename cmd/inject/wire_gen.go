@@ -27,7 +27,9 @@ func InitializeApp() (*server.App, error) {
 	rsRep := repo.ProviderRsRep()
 	deploymentRepo := repo.ProviderDeploymentRepo()
 	podRepo := repo.ProviderPodRepo()
-	informerManager := informer.NewInformerManager(secretRepo, configMapRepo, eventRepo, namespaceRepo, rsRep, deploymentRepo, podRepo)
+	serviceRepo := repo.ProviderServiceRepo()
+	nodeRepo := repo.ProviderNodeRepo()
+	informerManager := informer.NewInformerManager(secretRepo, configMapRepo, eventRepo, namespaceRepo, rsRep, deploymentRepo, podRepo, serviceRepo, nodeRepo)
 	db := client.ProvideDB()
 	iUserRepo := repo.NewIUserGetterImpl(db)
 	authMiddleware := middlewares.NewAuthMiddleware(iUserRepo)
@@ -43,7 +45,14 @@ func InitializeApp() (*server.App, error) {
 	deploymentController := controllers.ProviderDeploymentController(deploymentService)
 	userController := controllers.ProviderUserController(iUserServiceGetterImpl)
 	terminalController := controllers.ProviderTerminalController()
-	engine, err := routes.ProvideRouter(informerManager, authMiddleware, errorHandlerMiddleware, authController, secretController, configMapController, deploymentController, userController, terminalController)
+	serviceController := controllers.ProviderServiceController(serviceRepo)
+	clientset, err := client.NewMetricsClientSet()
+	if err != nil {
+		return nil, err
+	}
+	iNode := service.ProviderNodeService(nodeRepo, podRepo, clientset)
+	nodeController := controllers.ProviderNodeController(iNode)
+	engine, err := routes.ProvideRouter(informerManager, authMiddleware, errorHandlerMiddleware, authController, secretController, configMapController, deploymentController, userController, terminalController, serviceController, nodeController)
 	if err != nil {
 		return nil, err
 	}
